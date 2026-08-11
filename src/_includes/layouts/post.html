@@ -1,6 +1,10 @@
 ---
 layout: layouts/layout.html
 ---
+{%- comment -%}
+  Nothing here is tagged with `data-rosey`: posts have a whole file per
+  language, so these values arrive already translated from frontmatter.
+{%- endcomment -%}
 <div class="py-[48px] md:py-[96px] px-8">
     <article class="max-w-screen-md mx-auto">
     <img class="rounded-lg mb-4" src={{image}} alt={{image_alt}} />
@@ -17,7 +21,7 @@ layout: layouts/layout.html
       </li>
       <li class="post-data-list-item">
         <p>
-            {{date | date: "%B %d, %Y"}}
+            {{ date | localDate: locale }}
         </p>
       </li>
       <div class="flex gap-3">
@@ -39,10 +43,15 @@ layout: layouts/layout.html
   </article>
   <section
     class="max-w-screen-md mx-auto pt-[48px] flex flex-col items-center"
+    data-rosey-root=""
   >
-    <h2 class="text-2xl">Recent Posts</h2>
+    {%- comment -%}
+      An empty root drops to the global namespace, so every post in every
+      language shares one `recent_posts` translation instead of one per post.
+    {%- endcomment -%}
+    <h2 class="text-2xl" data-rosey="recent_posts">Recent Posts</h2>
     <div class="grid sm:grid-cols-2 gap-5 mt-5">
-        {% assign latest_posts = collections.posts | reverse %}
+        {% assign latest_posts = collections[posts_collection] | default: collections.posts %}
         {% for post in latest_posts limit:2 %}
             {% include 'partials/blog/summary.html' %}
         {% endfor %}

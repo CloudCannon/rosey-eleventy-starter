@@ -1,11 +1,37 @@
-<title>{{ title }}{% if site.site_title %} | {{ site.site_title }}{% endif %}</title>
+{%- assign _title = title -%}
+{%- if site.site_title -%}
+    {%- assign _title = title | append: ' | ' | append: site.site_title -%}
+{%- endif -%}
+{%- assign _description = seo.page_description | default: site.description -%}
 
-{% if seo.page_description %}
-    <meta name="description" content="{{ seo.page_description }}">
-    <meta property="og:description" content="{{ seo.page_description }}" />
-{% elsif site.description %}
-    <meta name="description" content="{{ site.description }}">
-    <meta property="og:description" content="{{ site.description }}" />
+{%- comment -%}
+  Rosey copies untagged head text verbatim, so a <title> without a key stays
+  English forever. Keys are opt-in: split-by-directory posts carry a translated
+  title in their own frontmatter, which a key would overwrite.
+{%- endcomment -%}
+{%- assign _title_key = rosey_title_key -%}
+{%- assign _desc_key = rosey_description_key -%}
+{%- if rosey_seo -%}
+    {%- if _title_key == blank -%}
+        {%- assign _title_key = rosey_root | append: ':page_title' -%}
+    {%- endif -%}
+    {%- if _desc_key == blank -%}
+        {%- assign _desc_key = rosey_root | append: ':page_description' -%}
+    {%- endif -%}
+{%- endif -%}
+
+{% if _title_key != blank %}
+    <title data-rosey="{{ _title_key }}">{{ _title }}</title>
+{% else %}
+    <title>{{ _title }}</title>
+{% endif %}
+
+{% if _desc_key != blank %}
+    <meta name="description" content="{{ _description }}" data-rosey-attrs-explicit='{"content":"{{ _desc_key }}"}'>
+    <meta property="og:description" content="{{ _description }}" data-rosey-attrs-explicit='{"content":"{{ _desc_key }}"}' />
+{% else %}
+    <meta name="description" content="{{ _description }}">
+    <meta property="og:description" content="{{ _description }}" />
 {% endif %}
 
 <link rel="shortcut icon" href="{{ site.favicon }}" type="image/x-icon" />
@@ -17,8 +43,14 @@
 {% else %}
     <meta property="og:type" content="website" />
 {% endif %}
-<meta name="og:title" content="{{ title }}{% if site.site_title %} | {{ site.site_title }}{% endif %}" />
-<meta name="twitter:title" content="{{ title }}{% if site.site_title %} | {{ site.site_title }}{% endif %}" />
+
+{% if _title_key != blank %}
+    <meta name="og:title" content="{{ _title }}" data-rosey-attrs-explicit='{"content":"{{ _title_key }}"}' />
+    <meta name="twitter:title" content="{{ _title }}" data-rosey-attrs-explicit='{"content":"{{ _title_key }}"}' />
+{% else %}
+    <meta name="og:title" content="{{ _title }}" />
+    <meta name="twitter:title" content="{{ _title }}" />
+{% endif %}
 
 {% if site.twitter_site %}
     <meta name="twitter:site" content="{{ site.twitter_site }}" />
@@ -32,8 +64,8 @@
 {% endif %}
 
 {% if seo.featured_image %}
-    <meta name="og:image" content="{{ .featured_image.image_path }}" />
-    <meta name="twitter:image" content="{{ .featured_image.image_path }}" />
+    <meta name="og:image" content="{{ seo.featured_image }}" />
+    <meta name="twitter:image" content="{{ seo.featured_image }}" />
     {% if seo.featured_image_alt %}<meta name="twitter:image:alt" content="{{ seo.featured_image_alt }}" />{% endif %}
 {% elsif site.image %}
     <meta name="og:image" content="{{ site.image }}" />
@@ -41,10 +73,14 @@
     {% if site.image_alt %}<meta name="twitter:image:alt" content="{{ site.image_alt }}" />{% endif %}
 {% endif %}
 
+{%- comment -%}
+  Root-relative so Rosey rewrites it per locale; an absolute URL would leave
+  every translated page claiming the default language's URL as canonical.
+{%- endcomment -%}
 {% if seo.canonical_url %}
     <link rel="canonical" href="{{ seo.canonical_url }}" />
 {% else %}
-    <link rel="canonical" href="{{ site.base_url }}{{ page.url | url }}" />
+    <link rel="canonical" href="{{ page.url }}" />
 {% endif %}
 
 {% if seo.no_index %}

@@ -1,10 +1,14 @@
 ---
 layout: layouts/layout.html
 ---
-<div data-editable="array" data-prop="content_blocks" data-component-key="_type">
+{%- comment -%}
+  Keyed by `_uuid` rather than loop index so a reorder doesn't reassign every
+  block's identity. The Rosey namespace lives inside each component.
+{%- endcomment -%}
+<div data-editable="array" data-prop="content_blocks" data-component-key="_type" data-id-key="_uuid">
   {% for block in content_blocks %}
     {% assign _blockType = block._type %}
-    <div data-editable="array-item" data-component="{{ block._type }}" data-id="{{ forloop.index0 }}">
+    <div data-editable="array-item" data-component="{{ block._type }}" data-id="{{ block._uuid }}">
       {% includeWith _blockType, block %}
     </div>
   {% endfor %}

@@ -16,6 +16,7 @@ preview:
     - star
 value:
   _type: components/featured-posts
+  _uuid:
   background_color: '#ffffff'
   heading:
     heading_text: Featured posts

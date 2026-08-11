@@ -1,0 +1,41 @@
+{%- comment -%}
+  Links to /en/ even though that path doesn't exist at build time — Rosey
+  relocates the default language there. `data-rosey-ignore` is essential:
+  without it Rosey rewrites these hrefs and /fr/ links to /fr/fr/about/.
+{%- endcomment -%}
+{%- assign segs = page.url | remove_first: '/' | split: '/' -%}
+{%- assign first = segs | first -%}
+{%- if i18n.codes contains first -%}
+  {%- assign segs = segs | slice: 1, 50 -%}
+{%- endif -%}
+{%- assign base = segs | join: '/' -%}
+{%- if base != '' -%}
+  {%- assign base = base | append: '/' -%}
+{%- endif -%}
+
+<nav aria-label="Language" class="locale-picker">
+  {%- for option in i18n.options %}
+    <a
+      class="locale-picker__link"
+      href="/{{ option.code }}/{{ base }}"
+      hreflang="{{ option.code }}"
+      data-rosey-ignore>{{ option.label }}</a>
+  {%- endfor %}
+</nav>
+
+<script>
+  if (window.inEditorMode) {
+    // The connector injects its own switcher, which this would compete with.
+    document.querySelectorAll("nav[aria-label='Language']").forEach(function (nav) {
+      nav.style.display = "none";
+    });
+  } else {
+    // Build-time HTML always reflects the default language, so active state
+    // has to be resolved in the browser.
+    document.querySelectorAll("nav[aria-label='Language'] a").forEach(function (link) {
+      var active = link.pathname === window.location.pathname;
+      link.classList.toggle("locale-picker__link--active", active);
+      if (active) link.setAttribute("aria-current", "page");
+    });
+  }
+</script>

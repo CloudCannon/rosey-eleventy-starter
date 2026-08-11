@@ -1,7 +1,7 @@
 {
-  "name": "eleventy-starter",
+  "name": "rosey-eleventy-starter",
   "version": "1.0.0",
-  "description": "A simple starter template for Eleventy & CloudCannon, using CloudCannon editable regions for visual editing. This is designed to be a good starting point for a site built with CloudCannon, without having to spend too much time stripping out placeholder content. This template aims to take out as much set up work as possible, to allow you to start building pages as quick as possible.",
+  "description": "A multilingual starter template for Eleventy & CloudCannon, using Rosey and the Rosey CloudCannon Connector for translations, and CloudCannon editable regions for visual editing. This is designed to be a good starting point for a multilingual site built with CloudCannon, without having to spend too much time stripping out placeholder content.",
   "main": "index.js",
   "scripts": {
     "sass:watch": "sass --watch src/assets/styles:_site/assets/styles",
@@ -11,7 +11,8 @@
     "tailwind:watch": "tailwindcss -i src/assets/styles/tailwind.css -o _site/assets/styles/tailwind.css --watch",
     "tailwind:build": "tailwindcss -i src/assets/styles/tailwind.css -o _site/assets/styles/tailwind.css",
     "start": "npm-run-all sass:build tailwind:build --parallel sass:watch tailwind:watch eleventy:watch",
-    "build": "npm-run-all sass:build tailwind:build eleventy:build"
+    "clean": "rm -rf _site _untranslated_site",
+    "build": "npm-run-all clean sass:build tailwind:build eleventy:build"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +29,9 @@
     "@cloudcannon/editable-regions": "0.0.19",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "markdown-it": "^14.1.0",
-    "npm-run-all2": "^8.0.4"
+    "npm-run-all2": "^8.0.4",
+    "rosey": "^2.3.10",
+    "rosey-cloudcannon-connector": "^2.0.1"
   },
   "overrides": {
     "sharp": "^0.35.3"

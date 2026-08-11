@@ -1,19 +1,19 @@
-# Eleventy CloudCannon Starter
+# Eleventy Multilingual CloudCannon Starter
 
-A starting point for developers looking to build a website with Eleventy, using CloudCannon editable regions for visual editing.
+A starting point for developers building a **multilingual** website with Eleventy, using [Rosey](https://rosey.cc/) and the [Rosey CloudCannon Connector](https://github.com/CloudCannon/rcc) for translations, and CloudCannon editable regions for visual editing.
+
+The site ships in English, French and German. Editors translate a page by clicking the connector's floating translate button in the Visual Editor; developers can edit the locale files directly. Both write to the same place.
+
+This is the Eleventy counterpart of the [Rosey Astro Starter](https://github.com/CloudCannon/rosey-astro-starter).
 
 Create your own copy, and start creating your own components to use in the CloudCannon CMS.
-
-To try to cut down on setup time this starter template includes some commonly used [features](#features) in CloudCannon.
 
 This template is aimed at helping developers build sites quickly, rather than providing editors with a fully built editable site.
 If you are an editor looking for an already built template, have a look at [CloudCannon's templates page](https://cloudcannon.com/templates/).
 
-[See a demo version of this site](https://large-leek.cloudvent.net/).
-
 ## Getting Started
 
-To start using this template, go to the [GitHub repository](https://github.com/CloudCannon/eleventy-starter/), and click `Use this template` to make your own copy.
+To start using this template, go to the GitHub repository and click `Use this template` to make your own copy.
 
 ### Local Development
 
@@ -44,7 +44,11 @@ Available skills:
 | `cloudcannon-visual-editing` | Adding Visual Editor support, setting up editable regions, debugging visual editing |
 | `cloudcannon-configuration` | Writing `cloudcannon.config.yml` — collections, inputs, structures, select data, collection URLs |
 | `cloudcannon-snippets` | Adding snippets to markdown content and configuring the Content Editor |
+| `cloudcannon-dev-server` | Driving the local CloudCannon dev server to check what the Visual Editor actually rendered |
+| `local-dev-servers` | Starting, identifying and cleaning up local dev servers and stray ports |
 | `migrating-to-cloudcannon` | Onboarding an existing SSG site to CloudCannon |
+| `make-site-multilingual` | Adding the Rosey/RCC translation stack to a site — the procedure this starter follows |
+| `translate-multilingual` | Translating `rosey/locales/*.json` and per-locale content files |
 | `brainstorming` | Exploring intent and design before a migration or larger change |
 
 Useful flags:
@@ -56,6 +60,7 @@ Useful flags:
 Skill files land in `.agents/skills/`, with agent-specific directories such as `.claude/skills/` symlinked to them, and the installed versions recorded in `skills-lock.json`. Commit `skills-lock.json` so teammates can restore the same set with `npx skills experimental_install`. Run `npx skills update` to pull in newer versions, `npx skills ls` to see what's installed, and `npx skills remove` to drop them.
 
 ## Features
+- [Multilingual](#multilingual)
 - [Editable regions](#editable-regions)
 - [Styling](#styling)
 - [Blog with pagination & tags](#blog-with-pagination--tags)
@@ -64,6 +69,68 @@ Skill files land in `.agents/skills/`, with agent-specific directories such as `
 - [Optimised for editing in CloudCannon](#optimised-for-editing-in-cloudcannon)
 - [SEO controls](#seo-controls)
 - [Font Awesome Icons](#font-awesome-icons)
+
+### Multilingual
+
+The site is built in English, then translated into French and German by [Rosey](https://rosey.cc/), which operates on the **built HTML** rather than on your templates.
+
+#### The pipeline
+
+Everything lives in `.cloudcannon/postbuild`, which runs after `npm run build`:
+
+1. `rosey generate` scans `_site` for `data-rosey` attributes and collects them into `rosey/base.json`.
+2. `rosey-cloudcannon-connector write-locales` syncs those keys into `rosey/locales/{fr,de}.json` and writes the locale manifest to `_site/_rcc/locales.json`.
+3. `rosey-cloudcannon-connector install-client` copies the browser client to `_site/_rcc/client.mjs`. Eleventy doesn't bundle browser JS, so `layout.html` imports that URL rather than a bare specifier.
+4. `rosey build` reads the locale files and writes the translated site.
+
+> **The site must set `CLOUDCANNON_SYNC_PATHS=/rosey/`.** Without it, CloudCannon doesn't sync the locale files back to the repository and **translations are lost on every build**. It's already in `.cloudcannon/initial-site-settings.json`.
+
+#### URL structure
+
+`rosey build` runs **without** `--default-language-at-root`, so every language is served under a prefix:
+
+| URL | What it is |
+| --- | --- |
+| `/` | A Rosey-generated redirect page |
+| `/en/`, `/en/blog/`, `/en/blog/my-post/` | English — relocated from the root by `rosey build` |
+| `/fr/…`, `/de/…` | French and German |
+
+Eleventy itself **must not** emit `/en/`. It builds English at the root and `rosey build` moves it. Emitting `/en/` in a permalink would produce `/en/en/`. Only the per-locale blog directories carry a prefix in Eleventy, because Rosey doesn't generate those pages.
+
+#### Two ways content gets translated
+
+| | Rosey keys | Split by directory |
+| --- | --- | --- |
+| **Used for** | Shared UI: nav, footer, headings, buttons, page-builder blocks, tag labels, `<title>`/meta description | Blog post bodies and their frontmatter |
+| **Lives in** | `rosey/locales/{fr,de}.json` | `src/pages/blog_fr/`, `src/pages/blog_de/` |
+| **Edited in** | The Locales collection, or the connector's translate button in the Visual Editor | The Blog (Français) / Blog (Deutsch) collections, like any other post |
+
+Post files share filenames across languages (`email-delivery-tips.md` in all three directories), because permalinks are derived from `page.fileSlug`, not the title. That's what keeps `/en/blog/x/`, `/fr/blog/x/` and `/de/blog/x/` aligned for the locale picker and tag links.
+
+#### Keys and namespaces
+
+- `data-rosey-root` is set on `<main>` from `page.filePathStem` (see `src/_data/eleventyComputed.js`). It's deliberately shared across pagination pages, so `/blog/` and `/blog/1/` don't mint duplicate keys, and `blog_fr/x` maps back to `blog/x`.
+- Page-builder blocks are namespaced by `_uuid` (`data-rosey-ns="{{ _uuid }}"`), placed **inside** each component rather than on the loop in `component-page.html` — the loop element is what CloudCannon clones when a block is added or reordered.
+- Tag chips use `data-rosey-root="tags"`, not `data-rosey-ns`. `root` resets the namespace, `ns` appends to it; appending would give a separate key per page (`blog:tags:bells`, `tags:tags:bells`) instead of one shared `tags:bells`.
+- Button labels are wrapped in their own `<span data-rosey="button_text">` so the key captures the text without the icon markup.
+
+#### Head and SEO text
+
+Rosey scans `<head>`, and untagged head text is copied verbatim onto generated pages — so an untagged `<title>` stays English forever. Keys are **opt-in** per page via `rosey_seo: true` in frontmatter, with `rosey_title_key` / `rosey_description_key` overrides (`src/pages/tags.md` uses these for per-tag titles).
+
+Opt-in is deliberate, not laziness: blog posts set `rosey_seo: false`, because their head already comes from their own translated frontmatter and a Rosey key would overwrite it.
+
+#### Adding a language
+
+1. Add the code to `LOCALES` in `_11ty_config/locales.js`.
+2. Create `src/pages/blog_<code>/` with a `blog_<code>.11tydata.js` that calls the shared factory.
+3. Add a `posts_<code>` collection and a `data_config.locales_<code>` entry to `cloudcannon.config.yml`, and put the collection in the Blogging group.
+4. Add `'!blog_<code>/*'` to the `pages` collection's `glob` in `cloudcannon.config.yml`. Without it the new posts appear in both Pages and `posts_<code>`, and the Pages entry opens them with the wrong schema.
+5. Add the code to `--locales` in `.cloudcannon/postbuild`, so the first build writes `rosey/locales/<code>.json`. Until that file exists the language is missing from `_rcc/locales.json` and the connector's switcher won't offer it.
+
+Everything else — the locale picker, the `data-rcc-exclude` list, the tag pages, the blog listing — is derived from that one map.
+
+There's no editor-facing way to do this: adding a language is a code change. Editors only ever see the result, in the connector's translate flow.
 
 ### Editable regions
 
@@ -79,7 +146,7 @@ To create a new page-building component:
 
 3. The page builder (`src/_includes/layouts/component-page.html`) renders `content_blocks` as an editable array, so your new block is immediately available in the Add menu.
 
-See `BOOKSHOP-TO-EDITABLE-REGIONS.md` for a full explanation of how the editable-regions setup works (including the migration this starter went through from Bookshop).
+Give the structure value a `_uuid:` key so blocks get a stable Rosey namespace, and put `data-rosey-ns="{{ _uuid }}"` on the component's root element. See [Multilingual](#multilingual).
 
 ### Styling
 
@@ -100,13 +167,11 @@ To remove Tailwind CSS from the project:
 }
 ```
 
-3. Delete your `tailwind.config.mjs` file.
+2. Remove the `/src/assets/styles/tailwind.css` file. (Tailwind 4 is CSS-first — there is no `tailwind.config.*`.)
 
-4. Remove the `/src/assets/styles.tailwind.css` file.
+3. Remove calls to `npm run tailwind:build` and `npm run tailwind:watch`.
 
-4. Remove calls to `npm run tailwind:build` and `npm run tailwind:watch`.
-
-5. Remove existing utility classes and replace them with SCSS/CSS.
+4. Remove existing utility classes and replace them with SCSS/CSS.
 
 #### Hot reloading
 
@@ -196,7 +261,7 @@ To add more icons:
 
 1. Go to the [Font Awesome icon list](https://fontawesome.com/search?o=r&m=free)
 2. Pick a free icon
-3. Add a new entry to the icons file in the data collection, `data/icons.json`. This file populates the icon dropdown list used for icons in the placeholder components. Add a name, and the class that FA gives you, eg. `fa-solid fa-bookmark`.
+3. Add a new entry to the icons file in the data collection, `src/_data/icons.json`. This file populates the icon dropdown list used for icons in the placeholder components. Add a name, and the class that FA gives you, eg. `fa-solid fa-bookmark`.
 
 If you want to add a custom icon, follow the example of the CloudCannon icon used in this template.
 
@@ -214,7 +279,7 @@ If you want to add a custom icon, follow the example of the CloudCannon icon use
 
 3. Remove any references to the icon component from other components
 
-4. Remove `/src/data/icons.json`
+4. Remove `/src/_data/icons.json`
 
 5. Remove any select inputs that were using the icon
 
@@ -230,5 +295,5 @@ icon:
 ```yaml
 data_config:
   icons:
-    path: data/icons.json
+    path: src/_data/icons.json
 ```

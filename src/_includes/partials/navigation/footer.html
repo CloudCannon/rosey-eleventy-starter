@@ -5,7 +5,7 @@
       class="footer grid grid-cols-1 sm:grid-cols-3 justify-between items-center gap-8 py-[48px]">
       <a
         class="flex justify-center sm:justify-start items-center"
-        href={{navigation.footer.logo_url}}>
+        href="{{ navigation.footer.logo_url | localizeUrl: locale }}">
         <img
           class="footer__logo-image"
           src={{navigation.footer.logo}}
@@ -22,10 +22,12 @@
         {% endfor %}
       </ul>
 
-      <ul class="flex flex-col text-center sm:text-end gap-4">
+      <ul class="flex flex-col text-center sm:text-end gap-4" data-rosey-ns="footer">
         {% for link in navigation.footer.links %}
             <li>
-                <a href={{link.link}}>{{link.text}}</a>
+                <a
+                  href="{{ link.link | localizeUrl: locale }}"
+                  data-rosey="{{ link.text | slugify }}">{{ link.text }}</a>
             </li>
         {% endfor %}
       </ul>
@@ -33,7 +35,7 @@
 
     <p class="text-center py-8">
       &#169; {% year %}
-      {{navigation.footer.copyright}}
+      <span data-rosey-ns="footer" data-rosey="copyright">{{ navigation.footer.copyright }}</span>
     </p>
   </div>
 </footer>

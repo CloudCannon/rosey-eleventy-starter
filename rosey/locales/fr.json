@@ -1,0 +1,172 @@
+{
+  "blog:page_description": {
+    "original": "A blog template with tags.",
+    "value": "Un modèle de blog avec des étiquettes.",
+    "_base_original": "A blog template with tags."
+  },
+  "blog:page_title": {
+    "original": "Blog | Eleventy Multilingual Starter",
+    "value": "Blog | Eleventy Multilingual Starter",
+    "_base_original": "Blog | Eleventy Multilingual Starter"
+  },
+  "blog:title": {
+    "original": "Blog",
+    "value": "Blog",
+    "_base_original": "Blog"
+  },
+  "footer:blog": {
+    "original": "Blog",
+    "value": "Blog",
+    "_base_original": "Blog"
+  },
+  "footer:copyright": {
+    "original": "MyCompany. All rights reserved.",
+    "value": "MyCompany. Tous droits réservés.",
+    "_base_original": "MyCompany. All rights reserved."
+  },
+  "footer:rss-feed": {
+    "original": "RSS Feed",
+    "value": "Flux RSS",
+    "_base_original": "RSS Feed"
+  },
+  "index:01acab69-cdbe-492c-a70f-e4dc5fb36658:6e12ae2e-97e7-49b2-80f4-38fe5282e494:button_text": {
+    "original": "GitHub",
+    "value": "GitHub",
+    "_base_original": "GitHub"
+  },
+  "index:01acab69-cdbe-492c-a70f-e4dc5fb36658:heading": {
+    "original": "Keep what you need. Delete the rest.",
+    "value": "Gardez ce dont vous avez besoin. Supprimez le reste.",
+    "_base_original": "Keep what you need. Delete the rest."
+  },
+  "index:01acab69-cdbe-492c-a70f-e4dc5fb36658:text": {
+    "original": "<p>To help save you time, some features are set up in this template, like:</p>\n<ul>\n<li>Translations powered by <a href=\"https://rosey.cc/\">Rosey</a> and the Rosey CloudCannon Connector</li>\n<li>A split-by-directory blog, with a whole content file per language</li>\n<li><a href=\"https://cloudcannon.com/documentation/articles/introduction-to-editable-regions/\">Editable regions</a></li>\n<li>Blog with pagination, tags and <a href=\"https://cloudcannon.com/documentation/articles/snippets-using-eleventy-shortcodes/\">snippets</a></li>\n<li><a href=\"https://www.11ty.dev/docs/plugins/image/\">Image optimization</a></li>\n<li>SEO Controls</li>\n<li>Responsive header and footer</li>\n<li><a href=\"https://fontawesome.com/search?o=r&amp;m=free&amp;s=solid\">Font Awesome Icons</a></li>\n<li>Schemas for adding new pages</li>\n<li>Editable color pallete</li>\n<li>Markdown styles</li>\n<li>CloudCannon configuration</li>\n</ul>",
+    "value": "<p>Pour vous faire gagner du temps, certaines fonctionnalités sont déjà en place dans ce modèle :</p>\n<ul>\n<li>Traductions assurées par <a href=\"https://rosey.cc/\">Rosey</a> et le Rosey CloudCannon Connector</li>\n<li>Un blog réparti par répertoire, avec un fichier de contenu complet par langue</li>\n<li><a href=\"https://cloudcannon.com/documentation/articles/introduction-to-editable-regions/\">Régions éditables</a></li>\n<li>Blog avec pagination, étiquettes et <a href=\"https://cloudcannon.com/documentation/articles/snippets-using-eleventy-shortcodes/\">snippets</a></li>\n<li><a href=\"https://www.11ty.dev/docs/plugins/image/\">Optimisation des images</a></li>\n<li>Contrôles SEO</li>\n<li>En-tête et pied de page responsives</li>\n<li><a href=\"https://fontawesome.com/search?o=r&amp;m=free&amp;s=solid\">Icônes Font Awesome</a></li>\n<li>Schémas pour ajouter de nouvelles pages</li>\n<li>Palette de couleurs modifiable</li>\n<li>Styles markdown</li>\n<li>Configuration CloudCannon</li>\n</ul>",
+    "_base_original": "<p>To help save you time, some features are set up in this template, like:</p>\n<ul>\n<li>Translations powered by <a href=\"https://rosey.cc/\">Rosey</a> and the Rosey CloudCannon Connector</li>\n<li>A split-by-directory blog, with a whole content file per language</li>\n<li><a href=\"https://cloudcannon.com/documentation/articles/introduction-to-editable-regions/\">Editable regions</a></li>\n<li>Blog with pagination, tags and <a href=\"https://cloudcannon.com/documentation/articles/snippets-using-eleventy-shortcodes/\">snippets</a></li>\n<li><a href=\"https://www.11ty.dev/docs/plugins/image/\">Image optimization</a></li>\n<li>SEO Controls</li>\n<li>Responsive header and footer</li>\n<li><a href=\"https://fontawesome.com/search?o=r&amp;m=free&amp;s=solid\">Font Awesome Icons</a></li>\n<li>Schemas for adding new pages</li>\n<li>Editable color pallete</li>\n<li>Markdown styles</li>\n<li>CloudCannon configuration</li>\n</ul>"
+  },
+  "index:0f1b6a7c-2d3e-4f50-9a1b-7c8d9e0f1a2b:description": {
+    "original": "<p>A hand-picked selection of posts from the blog.</p>",
+    "value": "<p>Une sélection d'articles du blog.</p>",
+    "_base_original": "<p>A hand-picked selection of posts from the blog.</p>"
+  },
+  "index:0f1b6a7c-2d3e-4f50-9a1b-7c8d9e0f1a2b:heading": {
+    "original": "Featured posts",
+    "value": "Articles à la une",
+    "_base_original": "Featured posts"
+  },
+  "index:8b6c6715-bec1-4872-a9cd-0f56b06d301e:0ab0c3c9-3440-4c7f-a3a7-80506f747ac0:button_text": {
+    "original": "GitHub",
+    "value": "GitHub",
+    "_base_original": "GitHub"
+  },
+  "index:8b6c6715-bec1-4872-a9cd-0f56b06d301e:cd883c9e-ef47-4d5f-8e76-725ef0c7b8e3:button_text": {
+    "original": "CloudCannon",
+    "value": "CloudCannon",
+    "_base_original": "CloudCannon"
+  },
+  "index:8b6c6715-bec1-4872-a9cd-0f56b06d301e:heading": {
+    "original": "Eleventy Multilingual Starter",
+    "value": "Eleventy Multilingual Starter",
+    "_base_original": "Eleventy Multilingual Starter"
+  },
+  "index:8b6c6715-bec1-4872-a9cd-0f56b06d301e:subheading": {
+    "original": "<p>A starting point for <strong>developers building a multilingual website with Eleventy, Rosey and CloudCannon</strong>. Translate this page from the Visual Editor, or edit the locale files directly — both round-trip to the same place.</p>",
+    "value": "<p>Un point de départ pour les <strong>développeurs qui créent un site multilingue avec Eleventy, Rosey et CloudCannon</strong>. Traduisez cette page depuis l'éditeur visuel, ou modifiez directement les fichiers de langue — les deux aboutissent au même endroit.</p>",
+    "_base_original": "<p>A starting point for <strong>developers building a multilingual website with Eleventy, Rosey and CloudCannon</strong>. Translate this page from the Visual Editor, or edit the locale files directly — both round-trip to the same place.</p>"
+  },
+  "index:f8d20580-8173-4f97-bb2b-ad6729854cb6:b558262b-21f6-4d3c-8a33-0c3ff076cf48:button_text": {
+    "original": "GitHub",
+    "value": "GitHub",
+    "_base_original": "GitHub"
+  },
+  "index:f8d20580-8173-4f97-bb2b-ad6729854cb6:heading": {
+    "original": "You choose your editing experience.",
+    "value": "Vous choisissez votre expérience d'édition.",
+    "_base_original": "You choose your editing experience."
+  },
+  "index:f8d20580-8173-4f97-bb2b-ad6729854cb6:text": {
+    "original": "<p>CloudCannon is a flexible Git-backed CMS that specialises in editing markdown and data files.</p>\n<p>Visual editing allows you to preview your changes live before you save them.</p>\n<p>Git-backed means you can keep all your familiar git workflows, while providing an easy-to-understand interface for non-technical editors to collaborate via Git.</p>",
+    "value": "<p>CloudCannon est un CMS flexible adossé à Git, spécialisé dans l'édition de fichiers markdown et de données.</p>\n<p>L'édition visuelle vous permet de prévisualiser vos modifications en direct avant de les enregistrer.</p>\n<p>Adossé à Git signifie que vous conservez tous vos workflows git habituels, tout en offrant aux éditeurs non techniques une interface simple pour collaborer via Git.</p>",
+    "_base_original": "<p>CloudCannon is a flexible Git-backed CMS that specialises in editing markdown and data files.</p>\n<p>Visual editing allows you to preview your changes live before you save them.</p>\n<p>Git-backed means you can keep all your familiar git workflows, while providing an easy-to-understand interface for non-technical editors to collaborate via Git.</p>"
+  },
+  "index:page_description": {
+    "original": "A starting point for developers building a multilingual website with Eleventy, Rosey and CloudCannon. Create your own copy, and start translating.",
+    "value": "Un point de départ pour les développeurs qui créent un site multilingue avec Eleventy, Rosey et CloudCannon. Créez votre propre copie et commencez à traduire.",
+    "_base_original": "A starting point for developers building a multilingual website with Eleventy, Rosey and CloudCannon. Create your own copy, and start translating."
+  },
+  "index:page_title": {
+    "original": "Home | Eleventy Multilingual Starter",
+    "value": "Accueil | Eleventy Multilingual Starter",
+    "_base_original": "Home | Eleventy Multilingual Starter"
+  },
+  "nav:blog": {
+    "original": "Blog",
+    "value": "Blog",
+    "_base_original": "Blog"
+  },
+  "nav:rss-feed": {
+    "original": "RSS Feed",
+    "value": "Flux RSS",
+    "_base_original": "RSS Feed"
+  },
+  "recent_posts": {
+    "original": "Recent Posts",
+    "value": "Articles récents",
+    "_base_original": "Recent Posts"
+  },
+  "tag_page_description": {
+    "original": "Posts tagged on the Eleventy Multilingual Starter blog.",
+    "value": "Articles étiquetés sur le blog Eleventy Multilingual Starter.",
+    "_base_original": "Posts tagged on the Eleventy Multilingual Starter blog."
+  },
+  "tag_page_titles:bells": {
+    "original": "Bells | Eleventy Multilingual Starter",
+    "value": "Cloches | Eleventy Multilingual Starter",
+    "_base_original": "Bells | Eleventy Multilingual Starter"
+  },
+  "tag_page_titles:email": {
+    "original": "Email | Eleventy Multilingual Starter",
+    "value": "E-mail | Eleventy Multilingual Starter",
+    "_base_original": "Email | Eleventy Multilingual Starter"
+  },
+  "tag_page_titles:marketing": {
+    "original": "Marketing | Eleventy Multilingual Starter",
+    "value": "Marketing | Eleventy Multilingual Starter",
+    "_base_original": "Marketing | Eleventy Multilingual Starter"
+  },
+  "tag_page_titles:technology": {
+    "original": "Technology | Eleventy Multilingual Starter",
+    "value": "Technologie | Eleventy Multilingual Starter",
+    "_base_original": "Technology | Eleventy Multilingual Starter"
+  },
+  "tag_page_titles:whistles": {
+    "original": "Whistles | Eleventy Multilingual Starter",
+    "value": "Sifflets | Eleventy Multilingual Starter",
+    "_base_original": "Whistles | Eleventy Multilingual Starter"
+  },
+  "tags:bells": {
+    "original": "Bells",
+    "value": "Cloches",
+    "_base_original": "Bells"
+  },
+  "tags:email": {
+    "original": "Email",
+    "value": "E-mail",
+    "_base_original": "Email"
+  },
+  "tags:marketing": {
+    "original": "Marketing",
+    "value": "Marketing",
+    "_base_original": "Marketing"
+  },
+  "tags:technology": {
+    "original": "Technology",
+    "value": "Technologie",
+    "_base_original": "Technology"
+  },
+  "tags:whistles": {
+    "original": "Whistles",
+    "value": "Sifflets",
+    "_base_original": "Whistles"
+  }
+}

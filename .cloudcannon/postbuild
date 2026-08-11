@@ -1,1 +1,18 @@
-echo "$ELEVENTY_ENV"
+#!/usr/bin/env bash
+# CloudCannon sources this file, so shell options set here leak into its runner.
+
+npx rosey generate --source _site
+
+# Drop --locales once the locale files exist; they're auto-detected after that.
+npx rosey-cloudcannon-connector write-locales --source rosey --dest _site --locales fr,de
+
+# Must run before the mv, so the client is inside the tree Rosey copies through.
+npx rosey-cloudcannon-connector install-client --dest _site
+
+# No --default-language-at-root: English moves from / to /en/, root becomes a
+# redirect. --exclusions keeps _rcc/locales.json, which Rosey's default would
+# strip — and without the manifest there's no switcher.
+rm -rf ./_untranslated_site
+mv ./_site ./_untranslated_site
+npx rosey build --source _untranslated_site --dest _site \
+  --default-language en --exclusions "\.(html?)$"

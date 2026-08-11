@@ -13,6 +13,7 @@ preview:
     - ads_click
 value:
   _type: components/buttons/primary
+  _uuid:
   button_text: Button Text
   button_icon:
   button_link: ''

@@ -4,8 +4,7 @@ title: ''
 draft: false
 featured: false
 permalink: 
-tags:
-  - ''
+tags: []
 author:
 thumb_image_path: ''
 thumb_image_alt: ''

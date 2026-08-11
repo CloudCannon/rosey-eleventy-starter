@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ locale | default: 'en' }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -29,17 +29,32 @@
     <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     </head>
     <body>
-        {% include 'partials/navigation/header.html' %}
-        <main id="main">
-            {{ content }}
-        </main>
-        {% include 'partials/navigation/footer.html' %}
+        {%- comment -%}
+          `data-rcc` is the snapshot boundary the connector diffs when swapping
+          languages: it must wrap header and footer, and can never be <body>.
+          `data-rcc-exclude` hides the switcher on pages translated by file.
+        {%- endcomment -%}
+        {%- assign rcc_exclude = '' -%}
+        {%- if hide_locale_switcher -%}
+          {%- assign rcc_exclude = i18n.translated_codes | join: ',' -%}
+        {%- endif -%}
+        <div data-rcc{% if rcc_exclude != blank %} data-rcc-exclude="{{ rcc_exclude }}"{% endif %}>
+          {% include 'partials/navigation/header.html' %}
+          <main id="main" data-rosey-root="{{ rosey_root }}">
+              {{ content }}
+          </main>
+          {% include 'partials/navigation/footer.html' %}
+        </div>
 
-        <!-- CloudCannon editable regions: load the live-editing bundle only inside the Visual Editor -->
+        <!-- Eleventy doesn't bundle browser JS, so the connector is imported by
+             URL from the copy `install-client` writes into the build output. -->
         <script>
           if (window.inEditorMode) {
             import("/register-components.js").catch((error) => {
               console.warn("Failed to load CloudCannon component registration:", error);
+            });
+            import("/_rcc/client.mjs").catch((error) => {
+              console.error("RCC: /_rcc/client.mjs failed to load — did install-client run?", error);
             });
           }
         </script>

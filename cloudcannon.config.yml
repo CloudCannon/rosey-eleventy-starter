@@ -1,6 +1,7 @@
 timezone: America/New_York
 
-source: src
+# Paths are repo-root-relative. A `source:` key would put rosey/locales outside
+# the tree CloudCannon resolves paths against, breaking locale-file editing.
 
 commit_templates:
   - label: Default message
@@ -9,15 +10,19 @@ commit_templates:
     template_string: '{message}'
 
 paths:
-  static: ''
-  uploads: assets/images
+  static: src
+  uploads: src/assets/images
 
 collections_config:
   pages:
-    path: pages
-    url: '/[full_slug]/'
-    glob: 
+    path: src/pages
+    # The postbuild omits `--default-language-at-root`, so `rosey build` moves
+    # English from / to /en/ and leaves a redirect at the root.
+    url: '/en/[full_slug]/'
+    glob:
       - '!blog/*'
+      - '!blog_fr/*'
+      - '!blog_de/*'
       - '!tags.md'
     icon: laptop_mac
     _enabled_editors:
@@ -43,28 +48,30 @@ collections_config:
         remove_extra_inputs: false
         name: New Page
         icon: notes
-        new_preview_url: /
+        new_preview_url: /en/
   posts:
-    path: pages/blog
-    url: /blog/{title|slugify}/
+    path: src/pages/blog
+    # Slug comes from the filename, not the title, so every language's copy of
+    # a post shares one URL path.
+    url: '/en/blog/[full_slug]/'
     icon: article
     _enabled_editors:
       - content
       - visual
     _inputs:
+      # Multiselect, not free text: a tag slug is the URL and is shared across
+      # every language, so a typo forks the taxonomy.
       tags:
-        type: array
+        type: multiselect
         options:
+          values: data.tags
           empty_type: array
-        cascade: true
-      tags[*]:
-        type: text
         cascade: true
       featured:
         type: switch
         comment: List this post in any Featured Posts component
       permalink:
-        comment: Override the relative url for this pages location (by default it will be at /blog/page-name/ if you don't set anything here)
+        comment: Override the relative url for this pages location (by default it will be at /en/blog/page-name/ if you don't set anything here)
     preview:
       text:
         - key: title
@@ -102,13 +109,63 @@ collections_config:
         hide_extra_inputs: false
         remove_empty_inputs: false
         remove_extra_inputs: true
+  # A whole file per language, so bodies and frontmatter are translated as
+  # content, not Rosey keys. Add is off: these mirror English filename-for-filename.
+  posts_fr:
+    path: src/pages/blog_fr
+    url: '/fr/blog/[full_slug]/'
+    name: Blog (Français)
+    icon: article
+    disable_add: true
+    disable_add_folder: true
+    _enabled_editors:
+      - content
+      - visual
+    schemas:
+      default:
+        path: .cloudcannon/schemas/post.md
+  posts_de:
+    path: src/pages/blog_de
+    url: '/de/blog/[full_slug]/'
+    name: Blog (Deutsch)
+    icon: article
+    disable_add: true
+    disable_add_folder: true
+    _enabled_editors:
+      - content
+      - visual
+    schemas:
+      default:
+        path: .cloudcannon/schemas/post.md
   data:
-    path: _data
+    path: src/_data
     icon: data_usage
     disable_url: true
     disable_add: true
     disable_add_folder: true
     disable_file_actions: false
+  # Everything tagged with `data-rosey` lands here, one entry per key. No
+  # `url:` — it's a data surface, not a page.
+  locales:
+    path: rosey/locales
+    name: Locales
+    icon: translate
+    disable_add: true
+    disable_add_folder: true
+    disable_file_actions: true
+    _inputs:
+      value:
+        type: html
+        label: Translation
+        cascade: true
+      original:
+        hidden: true
+        cascade: true
+      _base_original:
+        disabled: true
+        hidden: false
+        label: Original Text
+        cascade: true
 
 collection_groups:
   - heading: Pages
@@ -117,21 +174,26 @@ collection_groups:
   - heading: Blogging
     collections:
       - posts
+      - posts_fr
+      - posts_de
   - heading: Data
     collections:
       - data
+  - heading: Translations
+    collections:
+      - locales
 
 file_config:
-  - glob: pages/blog.md
+  - glob: src/pages/blog.md
     _inputs:
       permalink:
         hidden: true
-  - glob: _data/icons.json
+  - glob: src/_data/icons.json
     _inputs:
       $:
         comment: Add an icon from the list of [Font Awesome icons](https://fontawesome.com/search?o=r&m=free&s=solid). Add the HTML class that FA gives you, eg. 'fa-solid fa-bookmark'. The name you add is what will appear in any select dropdown lists that use this data file.
         label: Icons
-  - glob: _data/colors.json
+  - glob: src/_data/colors.json
     _inputs:
       $:
         label: Colors
@@ -150,13 +212,20 @@ file_config:
 
 data_config:
   icons:
-    path: _data/icons.json
+    path: src/_data/icons.json
   colors:
-    path: _data/colors.json
+    path: src/_data/colors.json
+  tags:
+    path: src/_data/tags.json
+  # The connector reads these to populate its language switcher and to write
+  # edits back.
+  locales_fr:
+    path: rosey/locales/fr.json
+  locales_de:
+    path: rosey/locales/de.json
 
-# Page-building structures. Each block/button component ships its own
-# `*.cloudcannon.structure-value.yml` next to its Liquid template; these globs
-# collect them so a new file = a new available block (no central edit needed).
+# Each component ships a `*.cloudcannon.structure-value.yml` next to its Liquid
+# template; these globs collect them, so a new file is a new available block.
 _structures:
   content_blocks:
     values_from_glob:
@@ -168,6 +237,11 @@ _structures:
 _inputs:
   _type:
     hidden: true
+  _uuid:
+    type: text
+    hidden: true
+    instance_value: UUID
+    comment: Stable per-block ID used as the Rosey translation namespace.
   content_blocks:
     type: array
     options:
@@ -227,7 +301,7 @@ _inputs:
     options:
       paths:
         uploads: src/assets/images
-        static: .
+        static: src
       accepts_mime_types:
         - image/png
         - image/jpeg
@@ -437,11 +511,8 @@ _editables:
     underline: true
     undo: true
 
-# Snippets let editors insert the Eleventy Liquid shortcodes defined in
-# .eleventy.js from the rich-text editor. alert/video/file are `raw` snippets:
-# their pattern is spelled out explicitly (positional args, comma-separated,
-# quoted) because CloudCannon's built-in Eleventy shortcode template ids are not
-# publicly enumerable. tint keeps a built-in paired-shortcode template.
+# alert/video/file spell out their `raw` pattern explicitly because
+# CloudCannon's built-in Eleventy shortcode template ids aren't enumerable.
 _snippets:
   alert:
     inline: false
@@ -521,7 +592,7 @@ _snippets:
         type: file
         options:
           paths:
-            uploads: assets/videos
+            uploads: src/assets/videos
   file:
     inline: false
     snippet: '{% file [[args]] %}'
@@ -551,7 +622,7 @@ _snippets:
         label: File source
         options:
           paths:
-            uploads: assets/documents
+            uploads: src/assets/documents
       file_name:
         comment: The name of the file, once downloaded.
       link_message:

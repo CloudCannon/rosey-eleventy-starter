@@ -2,11 +2,14 @@
 title: Blog
 layout: layouts/blog.html
 eleventyExcludeFromCollections: false
+rosey_seo: true
 pagination:
-  data: collections.posts
-  size: 3
-  alias: posts
-permalink: /blog{% if pagination.pageNumber > 0 %}/{{ pagination.pageNumber }}{% endif %}/index.html
+  data: collections.blogListingPages
+  size: 1
+  alias: listing
+permalink: '{{ listing.url }}'
+eleventyComputed:
+  locale: '{{ listing.locale }}'
 seo:
   page_description: 'A blog template with tags.'
   canonical_url:

@@ -2,13 +2,15 @@
 layout: layouts/layout.html
 ---
 <div class="py-[96px]">
+    {%- comment -%}
+      Shares the `tags:` namespace with the chips in blog/summary.html, so a
+      label is translated once and reads the same everywhere.
+    {%- endcomment -%}
     <h1
       class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-center my-12"
-    >
-      {{title}}
-    </h1>
+      data-rosey="{{ tagPage.tag }}">{{ tagPage.tag | tagLabel }}</h1>
     <section class="blog-index mx-auto">
-        {% assign posts = collections[ tag ] %}
+        {% assign posts = tagPage.posts %}
         {% include 'partials/blog/list.html' %}
     </section>
 </div>

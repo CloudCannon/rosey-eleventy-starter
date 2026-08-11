@@ -1,4 +1,4 @@
-<div class="left-right" style="background-color: {{background_color}};">
+<div class="left-right" data-rosey-ns="{{ _uuid }}" style="background-color: {{background_color}};">
   {% if flipped %}
       <div class="left-right__wrapper">
         <div class="order-2 md:order-1">
@@ -9,10 +9,10 @@
           {% endif %}
         </div>
         <div class="left-right__text order-1 md:order-2">
-          <h2 class="text-4xl" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text">
+          <h2 class="text-4xl" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text" data-rosey="heading">
             {{heading.heading_text}}
           </h2>
-          <div class="mb-4 markdown-text" style="color: {{text.color}};" data-editable="text" data-type="block" data-prop="text.markdown_content">
+          <div class="mb-4 markdown-text" style="color: {{text.color}};" data-editable="text" data-type="block" data-prop="text.markdown_content" data-rosey="text">
             {% if text.markdown_content %}{{ text.markdown_content | renderMarkdown }}{% endif %}
           </div>
           {% if button %}
@@ -24,10 +24,10 @@
   {% else %}
       <div class="left-right__wrapper">
         <div class="left-right__text">
-          <h2 class="text-4xl" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text">
+          <h2 class="text-4xl" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text" data-rosey="heading">
             {{heading.heading_text}}
           </h2>
-          <div class="mb-4 markdown-text" style="color: {{text.color}};" data-editable="text" data-type="block" data-prop="text.markdown_content">
+          <div class="mb-4 markdown-text" style="color: {{text.color}};" data-editable="text" data-type="block" data-prop="text.markdown_content" data-rosey="text">
             {% if text.markdown_content %}{{ text.markdown_content | renderMarkdown }}{% endif %}
           </div>
           {% if button %}

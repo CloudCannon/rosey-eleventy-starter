@@ -1,7 +1,7 @@
-<section class="featured-posts" style="background-color: {{background_color}};">
+<section class="featured-posts" data-rosey-ns="{{ _uuid }}" style="background-color: {{background_color}};">
   <div class="featured-posts__wrapper">
-    <h2 class="featured-posts__heading" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text">{{heading.heading_text}}</h2>
-    <div class="featured-posts__description markdown-text" style="color: {{description.color}};" data-editable="text" data-type="block" data-prop="description.markdown_content">
+    <h2 class="featured-posts__heading" style="color: {{heading.color}};" data-editable="text" data-type="span" data-prop="heading.heading_text" data-rosey="heading">{{heading.heading_text}}</h2>
+    <div class="featured-posts__description markdown-text" style="color: {{description.color}};" data-editable="text" data-type="block" data-prop="description.markdown_content" data-rosey="description">
       {% if description.markdown_content %}{{ description.markdown_content | renderMarkdown }}{% endif %}
     </div>
 
@@ -13,7 +13,7 @@
       newest-first — the editor's collection order isn't date-sorted, so sort
       explicitly rather than relying on Eleventy's default ordering.
     {% endcomment %}
-    {% assign all_posts = collections.posts %}
+    {% assign all_posts = collections[posts_collection] | default: collections.posts %}
     {% assign featured_posts = all_posts | where: 'data.featured', true %}
     {% assign featured_posts = featured_posts | sort: 'date' | reverse %}
     {% assign post_limit = limit | default: 3 %}
@@ -25,7 +25,7 @@
         {% endfor %}
       </div>
     {% else %}
-      <p class="featured-posts__empty">
+      <p class="featured-posts__empty" data-rosey="empty_state">
         No featured posts yet — set <code>Featured</code> to on for a post to list it here.
       </p>
     {% endif %}

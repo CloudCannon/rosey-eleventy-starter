@@ -1,10 +1,15 @@
-<button style="--hover_brightness: {{ hover_brightness }}; background-color: {{background_color}}" class="button">
-  <a style="color: {{text_color}}" href="{{button_link}}">
+{%- comment -%}
+  Rosey captures an element's whole innerHTML, so the key wraps only the label:
+  on the <a> it would swallow the icon and duplicate it on translated pages.
+  Buttons carry their own `_uuid` because one block can hold several.
+{%- endcomment -%}
+<button data-rosey-ns="{{ _uuid }}" style="--hover_brightness: {{ hover_brightness }}; background-color: {{background_color}}" class="button">
+  <a style="color: {{text_color}}" href="{{ button_link | localizeUrl: locale }}">
     {% if button_icon %}
       <span class="button__icon">
         {% include "components/icon", icon: button_icon %}
       </span>
     {% endif %}
-    {{button_text}}
+    <span data-rosey="button_text">{{ button_text }}</span>
   </a>
 </button>

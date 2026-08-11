@@ -6,8 +6,8 @@ draft: false
 featured: true
 permalink:
 tags:
-  - Bells
-  - Whistles
+  - bells
+  - whistles
 author: Test Richardson
 thumb_image_path: /assets/images/blog/blog-thumb-5.jpg
 thumb_image_alt: >-

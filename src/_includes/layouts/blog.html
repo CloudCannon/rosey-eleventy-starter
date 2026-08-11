@@ -2,13 +2,18 @@
 layout: layouts/layout.html
 ---
 <div class="py-[48px] md:py-[96px]">
-    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-center xl:mb-12">
-      {{title}}
-    </h1>
+    {%- comment -%}
+      One template serves every locale, so the heading is a Rosey key. The
+      sidebar input is default-language only: elsewhere it would edit English.
+    {%- endcomment -%}
+    <h1
+      class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-center xl:mb-12"
+      {% if locale == i18n.default_locale %}data-editable="text" data-type="span" data-prop="title"{% endif %}
+      data-rosey="title">{{ title }}</h1>
     <section class="blog-index mx-auto flex flex-col justify-center">
+        {% assign posts = listing.posts %}
         {% include 'partials/blog/list.html' %}
-        {% assign pageCount = pagination.hrefs | size %}
-        {% if pageCount > 1 %}
+        {% if listing.hrefs.size > 1 %}
           {% include 'partials/blog/pagination.html' %}
         {% endif %}
     </section>

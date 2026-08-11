@@ -1,8 +1,13 @@
+{%- comment -%}
+  Driven by the `listing` alias, not Eleventy's `pagination` object: this
+  template paginates blogListingPages one entry at a time, so
+  `pagination.href.next` would step into the next locale's first page.
+{%- endcomment -%}
 <nav class="blog-pagination">
     <ul class="pagination">
-      {% if pagination.href.previous %}
+      {% if listing.previous %}
         <li class="page-item">
-          <a class="page-link btn btn-secondary" href={{pagination.href.previous}}>
+          <a class="page-link btn btn-secondary" href="{{ listing.previous }}">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20.657"
@@ -26,8 +31,8 @@
         </li>
         {% endif %}
 
-        {% for page in pagination.hrefs %}
-        {% assign currentPage = pagination.pageNumber | plus: 1 %}
+        {% for href in listing.hrefs %}
+        {% assign currentPage = listing.pageNumber | plus: 1 %}
             {% if forloop.index == currentPage %}
                 <li class="page-item">
                     <span class="page-link btn btn-secondary active">{{ forloop.index }}</span>
@@ -36,7 +41,7 @@
                 <li class="page-item">
                     <a
                       class="page-link btn btn-secondary"
-                     href="{{ page }}"
+                     href="{{ href }}"
                     >
                     {{ forloop.index }}
                     </a>
@@ -44,9 +49,9 @@
             {% endif %}
         {% endfor %}
 
-          {% if pagination.href.next %}
+          {% if listing.next %}
           <li class="page-item">
-            <a class="page-link btn btn-secondary" href={{pagination.href.next}}>
+            <a class="page-link btn btn-secondary" href="{{ listing.next }}">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20.657"

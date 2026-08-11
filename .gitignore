@@ -1,4 +1,5 @@
 node_modules
 _site
+_untranslated_site
 .DS_Store
-assets/styles
+/_site/assets/styles

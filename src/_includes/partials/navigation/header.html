@@ -5,7 +5,7 @@
   style="background-color: {{ navigation.header.background_color }}; color: {{ navigation.header.color }}">
   <div class="header__container">
     <nav class="header__nav">
-      <a class="header__logo-link" href={{navigation.header.logo_url}}>
+      <a class="header__logo-link" href="{{ navigation.header.logo_url | localizeUrl: locale }}">
         <img class="header__logo-image" src={{navigation.header.logo}} alt={{navigation.header.logo_alt}} />
       </a>
       <button class="hamburger" @click="open = ! open">
@@ -27,18 +27,27 @@
           </g>
         </svg>
       </button>
+      {%- comment -%}
+        Shared across every page, so the links are namespaced under `nav:`
+        rather than the page's own root — one translation each, site-wide.
+      {%- endcomment -%}
       <ul
         class="header__nav-links"
         x-show="open"
         x-transition
+        data-rosey-ns="nav"
         @click.outside="open = false">
             {% for link in navigation.header.links %}
               <li class="header__nav-item">
-                <a class="header__nav-link" href={{link.link}}>
-                  {{link.text}}
-                </a>
+                <a
+                  class="header__nav-link"
+                  href="{{ link.link | localizeUrl: locale }}"
+                  data-rosey="{{ link.text | slugify }}">{{ link.text }}</a>
               </li>
             {% endfor %}
+            <li class="header__nav-item">
+              {% include 'partials/navigation/locale-picker.html' %}
+            </li>
       </ul>
     </nav>
   </div>
