@@ -1,6 +1,6 @@
 # Eleventy Multilingual CloudCannon Starter
 
-A starting point for developers building a **multilingual** website with Eleventy, using [Rosey](https://rosey.cc/) and the [Rosey CloudCannon Connector](https://github.com/CloudCannon/rcc) for translations, and CloudCannon editable regions for visual editing.
+A starting point for developers building a **multilingual** website with Eleventy, using [Rosey](https://rosey.app/) and the [Rosey CloudCannon Connector](https://github.com/CloudCannon/rcc) for translations, and CloudCannon editable regions for visual editing.
 
 The site ships in English, French and German. Editors translate a page by clicking the connector's floating translate button in the Visual Editor; developers can edit the locale files directly. Both write to the same place.
 
@@ -72,7 +72,7 @@ Skill files land in `.agents/skills/`, with agent-specific directories such as `
 
 ### Multilingual
 
-The site is built in English, then translated into French and German by [Rosey](https://rosey.cc/), which operates on the **built HTML** rather than on your templates.
+The site is built in English, then translated into French and German by [Rosey](https://rosey.app/), which operates on the **built HTML** rather than on your templates.
 
 #### The pipeline
 
