@@ -1,0 +1,576 @@
+timezone: America/New_York
+
+source: src
+
+commit_templates:
+  - label: Default message
+    template_string: '[default_commit_message]'
+  - label: Custom message
+    template_string: '{message}'
+
+paths:
+  static: ''
+  uploads: assets/images
+
+collections_config:
+  pages:
+    path: pages
+    url: '/[full_slug]/'
+    glob: 
+      - '!blog/*'
+      - '!tags.md'
+    icon: laptop_mac
+    _enabled_editors:
+      - visual
+    add_options:
+      - name: Add New Page
+        icon: pages
+        schema: default
+    create:
+      path: '[relative_base_path]/{title|slugify}.md'
+    disable_add: false
+    disable_add_folder: false
+    disable_file_actions: false
+    _inputs:
+      permalink:
+        comment: The relative url that this page should be located (e.g. /page-name/)
+    schemas:
+      default:
+        path: .cloudcannon/schemas/page.md
+        reorder_inputs: true
+        hide_extra_inputs: false
+        remove_empty_inputs: false
+        remove_extra_inputs: false
+        name: New Page
+        icon: notes
+        new_preview_url: /
+  posts:
+    path: pages/blog
+    url: /blog/{title|slugify}/
+    icon: article
+    _enabled_editors:
+      - content
+      - visual
+    _inputs:
+      tags:
+        type: array
+        options:
+          empty_type: array
+        cascade: true
+      tags[*]:
+        type: text
+        cascade: true
+      featured:
+        type: switch
+        comment: List this post in any Featured Posts component
+      permalink:
+        comment: Override the relative url for this pages location (by default it will be at /blog/page-name/ if you don't set anything here)
+    preview:
+      text:
+        - key: title
+      gallery:
+        fit: cover
+        image: 
+          - key: thumb_image_path
+          - key: image
+      metadata:
+        - icon: calendar_month
+          text: 
+            - template: Created {date|date_long}
+            - Add date
+        - icon: person
+          text:
+            - template: By {author}
+            - No author
+        - icon: style
+          text:
+            - template: '{tags[*]}'
+            - No tags
+    add_options:
+      - name: Add New Post
+        icon: post_add
+        schema: default
+    create:
+      path: '[relative_base_path]/{title|slugify}.md'
+    disable_add: false
+    disable_add_folder: false
+    disable_file_actions: false
+    schemas:
+      default:
+        path: .cloudcannon/schemas/post.md
+        reorder_inputs: true
+        hide_extra_inputs: false
+        remove_empty_inputs: false
+        remove_extra_inputs: true
+  data:
+    path: _data
+    icon: data_usage
+    disable_url: true
+    disable_add: true
+    disable_add_folder: true
+    disable_file_actions: false
+
+collection_groups:
+  - heading: Pages
+    collections:
+      - pages
+  - heading: Blogging
+    collections:
+      - posts
+  - heading: Data
+    collections:
+      - data
+
+file_config:
+  - glob: pages/blog.md
+    _inputs:
+      permalink:
+        hidden: true
+  - glob: _data/icons.json
+    _inputs:
+      $:
+        comment: Add an icon from the list of [Font Awesome icons](https://fontawesome.com/search?o=r&m=free&s=solid). Add the HTML class that FA gives you, eg. 'fa-solid fa-bookmark'. The name you add is what will appear in any select dropdown lists that use this data file.
+        label: Icons
+  - glob: _data/colors.json
+    _inputs:
+      $:
+        label: Colors
+        type: array
+        options:
+          structures:
+            values:
+              - label: Color
+                icon: palette
+                value:
+                  name:
+                  value:
+                _inputs:
+                  value:
+                    type: color
+
+data_config:
+  icons:
+    path: _data/icons.json
+  colors:
+    path: _data/colors.json
+
+# Page-building structures. Each block/button component ships its own
+# `*.cloudcannon.structure-value.yml` next to its Liquid template; these globs
+# collect them so a new file = a new available block (no central edit needed).
+_structures:
+  content_blocks:
+    values_from_glob:
+      - /src/_includes/components/*.cloudcannon.structure-value.yml
+  buttons:
+    values_from_glob:
+      - /src/_includes/components/buttons/*.cloudcannon.structure-value.yml
+
+_inputs:
+  _type:
+    hidden: true
+  content_blocks:
+    type: array
+    options:
+      structures: _structures.content_blocks
+  buttons:
+    type: array
+    options:
+      structures: _structures.buttons
+  button:
+    type: object
+    options:
+      structures: _structures.buttons
+  draft:
+    type: checkbox
+    hidden: true
+  eleventyExcludeFromCollections:
+    hidden: true
+  pagination.data:
+    hidden: true
+  pagination.alias:
+    hidden: true
+  pagination.size:
+    type: number
+    comment: The number of collection items to list per page
+    cascade: true
+  markdown_content:
+    type: markdown
+    options:
+      allow_resize: true
+      allow_custom_markup: false
+      remove_custom_markup: false
+      initial_height: 320
+      snippet: true
+      blockquote: true
+      bold: true
+      bulletedlist: true
+      code: true
+      copyformatting: true
+      format: p h2 h3 h4
+      horizontalrule: true
+      image: true
+      image_size_attributes: true
+      italic: true
+      link: true
+      numberedlist: true
+      redo: true
+      removeformat: true
+      strike: true
+      subscript: true
+      superscript: true
+      table: true
+      underline: true
+      undo: true
+    cascade: true
+  image_path:
+    type: image
+    options:
+      paths:
+        uploads: src/assets/images
+        static: .
+      accepts_mime_types:
+        - image/png
+        - image/jpeg
+        - image/gif
+    comment: The path to the source file of the image to be optimized.
+    cascade: true
+  alt_text:
+    type: textarea
+    label: Image Alt Text
+    hidden: '!image_path'
+    cascade: true
+  width:
+    type: number
+    cascade: true
+  height:
+    type: number
+    cascade: true
+  background_color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+    hidden: border_only
+    cascade: true
+  text_color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+    cascade: true
+  color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+    cascade: true
+  icon:
+    type: select
+    options:
+      allow_empty: true
+      values: data.icons
+      value_key: value
+      preview:
+        text:
+          - key: name
+    cascade: true
+  button_icon:
+    type: select
+    options:
+      allow_empty: true
+      values: data.icons
+      value_key: value
+      preview:
+        text:
+          - key: name
+    cascade: true
+  button_link:
+    type: url
+    cascade: true
+  hover_brightness:
+    type: range
+    options:
+      min: 0
+      max: 1.5
+      step: 0.05
+    cascade: true
+  seo:
+    type: auto
+    options:
+      preview:
+        text:
+          - Search engine optimization
+        subtext:
+          - key: page_description
+          - Update SEO values for the page
+        icon: query_stats
+    cascade: true
+  layout:
+    type: auto
+    hidden: true
+    cascade: true
+  date:
+    type: auto
+    instance_value: NOW
+    cascade: true
+  social:
+    type: auto
+    options:
+      preview:
+        icon: link
+    cascade: true
+  links[*]:
+    type: auto
+    options:
+      preview:
+        text:
+          - key: text
+          - Link
+        subtext:
+          - key: link
+          - Add a social link
+        icon: link
+    cascade: true
+  social_icon:
+    type: select
+    options:
+      allow_empty: true
+      values: data.icons
+      value_key: value
+      preview:
+        text:
+          - key: name
+    cascade: true
+  social[*]:
+    type: auto
+    options:
+      preview:
+        icon: query_stats
+    cascade: true
+  logo:
+    type: image
+    cascade: true
+  logo_url:
+    type: auto
+    comment: Link for the logo in the top left of the footer
+    cascade: true
+  copyright:
+    type: auto
+    comment: Automatically prefixed with the current year
+    cascade: true
+  page_description:
+    type: auto
+    comment: Defaults to the description set in the Site SEO data file
+    cascade: true
+  canonical_url:
+    type: auto
+    comment: Defaults to the pages url
+    cascade: true
+  featured_image:
+    type: auto
+    comment: Defaults to the image set in the Site SEO data file
+    cascade: true
+  open_graph_type:
+    type: select
+    options:
+      allow_empty: true
+      values:
+        - website
+        - article
+    comment: Defaults to the type 'website'
+    cascade: true
+  author_twitter_handle:
+    type: auto
+    comment: Defaults to the twitter site value set in the Site SEO data file
+    cascade: true
+  twitter_site:
+    type: url
+    cascade: true
+  no_index:
+    type: checkbox
+    comment: >-
+      When selected this removes the page from your sitemap and adds the noindex
+      robots meta tag
+    cascade: true
+  favicon:
+    type: image
+_editables:
+  content:
+    allow_custom_markup: false
+    remove_custom_markup: false
+    snippet: true
+    blockquote: true
+    bold: true
+    bulletedlist: true
+    center: align-center
+    code: true
+    copyformatting: true
+    embed: true
+    format: p h2 h3 h4
+    horizontalrule: true
+    image: true
+    image_size_attributes: true
+    indent: true
+    italic: true
+    justify: align-justify
+    left: align-left
+    link: true
+    numberedlist: true
+    outdent: true
+    redo: true
+    removeformat: true
+    right: align-right
+    strike: true
+    styles: /src/assets/styles/editor.css
+    subscript: true
+    superscript: true
+    table: true
+    underline: true
+    undo: true
+
+# Snippets let editors insert the Eleventy Liquid shortcodes defined in
+# .eleventy.js from the rich-text editor. alert/video/file are `raw` snippets:
+# their pattern is spelled out explicitly (positional args, comma-separated,
+# quoted) because CloudCannon's built-in Eleventy shortcode template ids are not
+# publicly enumerable. tint keeps a built-in paired-shortcode template.
+_snippets:
+  alert:
+    inline: false
+    snippet: '{% alert [[args]] %}'
+    preview:
+      text:
+        - key: alert_message
+        - 'Alert'
+      gallery:
+        image: /assets/images/snippet-previews/alert.preview.webp
+    params:
+      args:
+        parser: argument_list
+        options:
+          models:
+            - editor_key: background_color
+              type: string
+            - editor_key: alert_message
+              type: string
+            - editor_key: color
+              type: string
+            - editor_key: icon
+              type: string
+          format:
+            root_pair_delimiter:
+              - ', '
+            string_boundary:
+              - '"'
+    _inputs:
+      background_color:
+        type: select
+        options:
+          values: data.colors
+          value_key: value
+          preview:
+            text:
+              - key: name
+      icon:
+        type: select
+        options:
+          allow_empty: true
+          values: data.icons
+          value_key: value
+          preview:
+            text:
+              - key: name
+      color:
+        type: select
+        options:
+          values: data.colors
+          value_key: value
+          preview:
+            text:
+              - key: name
+      alert_message:
+        comment: This is the text displayed in the alert
+        type: textarea
+  video:
+    inline: false
+    snippet: '{% video [[src]] %}'
+    preview:
+      text: Video
+      gallery:
+        image: /assets/images/snippet-previews/video.preview.webp
+    params:
+      src:
+        parser: argument
+        options:
+          model:
+            editor_key: src
+            type: string
+          format:
+            string_boundary:
+              - '"'
+    _inputs:
+      src:
+        type: file
+        options:
+          paths:
+            uploads: assets/videos
+  file:
+    inline: false
+    snippet: '{% file [[args]] %}'
+    preview:
+      text: File
+      gallery:
+        image: /assets/images/snippet-previews/file.preview.webp
+    params:
+      args:
+        parser: argument_list
+        options:
+          models:
+            - editor_key: src
+              type: string
+            - editor_key: file_name
+              type: string
+            - editor_key: link_message
+              type: string
+          format:
+            root_pair_delimiter:
+              - ', '
+            string_boundary:
+              - '"'
+    _inputs:
+      src:
+        type: file
+        label: File source
+        options:
+          paths:
+            uploads: assets/documents
+      file_name:
+        comment: The name of the file, once downloaded.
+      link_message:
+        type: textarea
+        comment: The text for the download link
+  tint:
+    template: eleventy_liquid_paired_shortcode_positional_args
+    inline: true
+    preview:
+      text: Tint
+      gallery:
+        image: /assets/images/snippet-previews/tint.preview.webp
+    definitions:
+      shortcode_name: tint
+      content_key: text
+      positional_args:
+        - editor_key: color
+          type: string
+    _inputs:
+      text:
+        comment: This text will be tinted
+        type: textarea

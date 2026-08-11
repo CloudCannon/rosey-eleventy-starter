@@ -1,0 +1,15 @@
+---
+layout: layouts/layout.html
+---
+<div class="py-[48px] md:py-[96px]">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-center xl:mb-12">
+      {{title}}
+    </h1>
+    <section class="blog-index mx-auto flex flex-col justify-center">
+        {% include 'partials/blog/list.html' %}
+        {% assign pageCount = pagination.hrefs | size %}
+        {% if pageCount > 1 %}
+          {% include 'partials/blog/pagination.html' %}
+        {% endif %}
+    </section>
+</div>

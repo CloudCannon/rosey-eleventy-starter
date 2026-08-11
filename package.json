@@ -1,0 +1,36 @@
+{
+  "name": "eleventy-starter",
+  "version": "1.0.0",
+  "description": "A simple starter template for Eleventy & CloudCannon, using CloudCannon editable regions for visual editing. This is designed to be a good starting point for a site built with CloudCannon, without having to spend too much time stripping out placeholder content. This template aims to take out as much set up work as possible, to allow you to start building pages as quick as possible.",
+  "main": "index.js",
+  "scripts": {
+    "sass:watch": "sass --watch src/assets/styles:_site/assets/styles",
+    "sass:build": "sass src/assets/styles:_site/assets/styles",
+    "eleventy:build": "eleventy",
+    "eleventy:watch": "ELEVENTY_ENV=development eleventy --serve",
+    "tailwind:watch": "tailwindcss -i src/assets/styles/tailwind.css -o _site/assets/styles/tailwind.css --watch",
+    "tailwind:build": "tailwindcss -i src/assets/styles/tailwind.css -o _site/assets/styles/tailwind.css",
+    "start": "npm-run-all sass:build tailwind:build --parallel sass:watch tailwind:watch eleventy:watch",
+    "build": "npm-run-all sass:build tailwind:build eleventy:build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@tailwindcss/cli": "^4.3.3",
+    "sass": "^1.101.7",
+    "tailwindcss": "^4.3.3"
+  },
+  "dependencies": {
+    "@11ty/eleventy-img": "^6.0.4",
+    "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "@cloudcannon/editable-regions": "0.0.19",
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "markdown-it": "^14.1.0",
+    "npm-run-all2": "^8.0.4"
+  },
+  "overrides": {
+    "sharp": "^0.35.3"
+  }
+}

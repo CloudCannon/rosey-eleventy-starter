@@ -1,0 +1,2 @@
+npm run sass:build
+npm run tailwind:build
