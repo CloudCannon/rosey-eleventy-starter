@@ -2,6 +2,8 @@
 
 A starting point for developers building a **multilingual** website with Eleventy, using [Rosey](https://rosey.app/) and the [Rosey CloudCannon Connector](https://github.com/CloudCannon/rcc) for translations, and CloudCannon editable regions for visual editing.
 
+See a [demo site](https://quiet-plane.cloudvent.net/).
+
 The site ships in English, French and German. Editors translate a page by clicking the connector's floating translate button in the Visual Editor; developers can edit the locale files directly. Both write to the same place.
 
 This is the Eleventy counterpart of the [Rosey Astro Starter](https://github.com/CloudCannon/rosey-astro-starter).
@@ -48,17 +50,17 @@ npx skills add cloudcannon/agent-skills --skill cloudcannon-visual-editing,cloud
 
 Available skills:
 
-| Skill | Use it for |
-| --- | --- |
-| `cloudcannon-visual-editing` | Adding Visual Editor support, setting up editable regions, debugging visual editing |
-| `cloudcannon-configuration` | Writing `cloudcannon.config.yml` — collections, inputs, structures, select data, collection URLs |
-| `cloudcannon-snippets` | Adding snippets to markdown content and configuring the Content Editor |
-| `cloudcannon-dev-server` | Driving the local CloudCannon dev server to check what the Visual Editor actually rendered |
-| `local-dev-servers` | Starting, identifying and cleaning up local dev servers and stray ports |
-| `migrating-to-cloudcannon` | Onboarding an existing SSG site to CloudCannon |
-| `make-site-multilingual` | Adding the Rosey/RCC translation stack to a site — the procedure this starter follows |
-| `translate-multilingual` | Translating `rosey/locales/*.json` and per-locale content files |
-| `brainstorming` | Exploring intent and design before a migration or larger change |
+| Skill                        | Use it for                                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ |
+| `cloudcannon-visual-editing` | Adding Visual Editor support, setting up editable regions, debugging visual editing              |
+| `cloudcannon-configuration`  | Writing `cloudcannon.config.yml` — collections, inputs, structures, select data, collection URLs |
+| `cloudcannon-snippets`       | Adding snippets to markdown content and configuring the Content Editor                           |
+| `cloudcannon-dev-server`     | Driving the local CloudCannon dev server to check what the Visual Editor actually rendered       |
+| `local-dev-servers`          | Starting, identifying and cleaning up local dev servers and stray ports                          |
+| `migrating-to-cloudcannon`   | Onboarding an existing SSG site to CloudCannon                                                   |
+| `make-site-multilingual`     | Adding the Rosey/RCC translation stack to a site — the procedure this starter follows            |
+| `translate-multilingual`     | Translating `rosey/locales/*.json` and per-locale content files                                  |
+| `brainstorming`              | Exploring intent and design before a migration or larger change                                  |
 
 Useful flags:
 
@@ -69,6 +71,7 @@ Useful flags:
 Skill files land in `.agents/skills/`, with agent-specific directories such as `.claude/skills/` symlinked to them, and the installed versions recorded in `skills-lock.json`. Commit `skills-lock.json` so teammates can restore the same set with `npx skills experimental_install`. Run `npx skills update` to pull in newer versions, `npx skills ls` to see what's installed, and `npx skills remove` to drop them.
 
 ## Features
+
 - [Multilingual](#multilingual)
 - [Editable regions](#editable-regions)
 - [Styling](#styling)
@@ -98,21 +101,21 @@ Everything lives in `.cloudcannon/postbuild`, which runs after `npm run build`:
 
 `rosey build` runs **without** `--default-language-at-root`, so every language is served under a prefix:
 
-| URL | What it is |
-| --- | --- |
-| `/` | A Rosey-generated redirect page |
+| URL                                      | What it is                                         |
+| ---------------------------------------- | -------------------------------------------------- |
+| `/`                                      | A Rosey-generated redirect page                    |
 | `/en/`, `/en/blog/`, `/en/blog/my-post/` | English — relocated from the root by `rosey build` |
-| `/fr/…`, `/de/…` | French and German |
+| `/fr/…`, `/de/…`                         | French and German                                  |
 
 Eleventy itself **must not** emit `/en/`. It builds English at the root and `rosey build` moves it. Emitting `/en/` in a permalink would produce `/en/en/`. Only the per-locale blog directories carry a prefix in Eleventy, because Rosey doesn't generate those pages.
 
 #### Two ways content gets translated
 
-| | Rosey keys | Split by directory |
-| --- | --- | --- |
-| **Used for** | Shared UI: nav, footer, headings, buttons, page-builder blocks, tag labels, `<title>`/meta description | Blog post bodies and their frontmatter |
-| **Lives in** | `rosey/locales/{fr,de}.json` | `src/pages/blog_fr/`, `src/pages/blog_de/` |
-| **Edited in** | The Locales collection, or the connector's translate button in the Visual Editor | The Blog (Français) / Blog (Deutsch) collections, like any other post |
+|               | Rosey keys                                                                                             | Split by directory                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| **Used for**  | Shared UI: nav, footer, headings, buttons, page-builder blocks, tag labels, `<title>`/meta description | Blog post bodies and their frontmatter                                |
+| **Lives in**  | `rosey/locales/{fr,de}.json`                                                                           | `src/pages/blog_fr/`, `src/pages/blog_de/`                            |
+| **Edited in** | The Locales collection, or the connector's translate button in the Visual Editor                       | The Blog (Français) / Blog (Deutsch) collections, like any other post |
 
 Post files share filenames across languages (`email-delivery-tips.md` in all three directories), because permalinks are derived from `page.fileSlug`, not the title. That's what keeps `/en/blog/x/`, `/fr/blog/x/` and `/de/blog/x/` aligned for the locale picker and tag links.
 
@@ -209,11 +212,11 @@ These text heavy pages will be edited in CloudCannon's content editor, rather th
 
 #### Drafts
 
-Drafts (content that exsits but is unpublished and not included within collections) are supported within the site. If you want to have drafts enabled, on your main site within CloudCannon you will need to set the variable `ELEVENTY_ENV=production` and remove 
+Drafts (content that exsits but is unpublished and not included within collections) are supported within the site. If you want to have drafts enabled, on your main site within CloudCannon you will need to set the variable `ELEVENTY_ENV=production` and remove
 
 ```
-drafts: 
-  hidden: true 
+drafts:
+  hidden: true
 ```
 
 in the cloudcannon.config.yml file.
@@ -233,13 +236,40 @@ The image component will process an image in your src/assets/images folder, and 
 
 ```html
 <picture>
-    <source type="image/avif" srcset="/optimized/0L8bYGwHxv-640.avif 640w, /optimized/0L8bYGwHxv-960.avif 960w, /optimized/0L8bYGwHxv-1280.avif 1280w" sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px">
-    <source type="image/webp" srcset="/optimized/0L8bYGwHxv-640.webp 640w, /optimized/0L8bYGwHxv-960.webp 960w, /optimized/0L8bYGwHxv-1280.webp 1280w" sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px">
-    <img alt="An image" class="c-image" loading="eager" decoding="async" src="/optimized/0L8bYGwHxv-640.jpeg" width="1280" height="701" srcset="/optimized/0L8bYGwHxv-640.jpeg 640w, /optimized/0L8bYGwHxv-960.jpeg 960w, /optimized/0L8bYGwHxv-1280.jpeg 1280w" sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px">
+  <source
+    type="image/avif"
+    srcset="
+      /optimized/0L8bYGwHxv-640.avif   640w,
+      /optimized/0L8bYGwHxv-960.avif   960w,
+      /optimized/0L8bYGwHxv-1280.avif 1280w
+    "
+    sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px" />
+  <source
+    type="image/webp"
+    srcset="
+      /optimized/0L8bYGwHxv-640.webp   640w,
+      /optimized/0L8bYGwHxv-960.webp   960w,
+      /optimized/0L8bYGwHxv-1280.webp 1280w
+    "
+    sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px" />
+  <img
+    alt="An image"
+    class="c-image"
+    loading="eager"
+    decoding="async"
+    src="/optimized/0L8bYGwHxv-640.jpeg"
+    width="1280"
+    height="701"
+    srcset="
+      /optimized/0L8bYGwHxv-640.jpeg   640w,
+      /optimized/0L8bYGwHxv-960.jpeg   960w,
+      /optimized/0L8bYGwHxv-1280.jpeg 1280w
+    "
+    sizes="(max-width: 640px) 320px, (max-width: 960px) 500px, (max-width: 1280px) 640px" />
 </picture>
 ```
 
-###  Optimised for editing in CloudCannon
+### Optimised for editing in CloudCannon
 
 #### Cloudcannon Configuration
 
