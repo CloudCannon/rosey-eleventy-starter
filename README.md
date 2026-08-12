@@ -21,6 +21,15 @@ To start using this template, go to the GitHub repository and click `Use this te
 2. At the root of the project, run `npm install`, to install the node modules.
 3. Run `npm start`. Eleventy will generate and serve your site from a folder called `_site`.
 
+### Linting
+
+[Biome](https://biomejs.dev/) handles both formatting and linting. `npm run lint` checks, `npm run biome` writes the fixes. The `Lint` GitHub Action runs the check on pushes and pull requests to `main`.
+
+Two things about `biome.json` are worth knowing before you edit it, because neither is obvious and it takes no comments of its own:
+
+- `complexity/useArrowFunction` is off. Eleventy only gives a shortcode or filter `this.page`/`this.ctx` when it's declared with `function`, so converting those callbacks to arrows quietly removes context a later edit would expect to find.
+- Biome only sees hand-written code. The `.html` templates are Liquid, which its HTML parser can't read; `package.json`, `package-lock.json`, `rosey/`, `.cloudcannon/` and `src/_data/*.json` all belong to other tools. The data files in particular are written back by the CloudCannon editor in its own format, so linting them would fail CI on content edits no one can fix from the CMS.
+
 ### CloudCannon skills for AI coding agents
 
 If you build with an AI coding agent (Claude Code, Cursor, Copilot, etc.), install CloudCannon's [agent skills](https://github.com/cloudcannon/agent-skills). These teach your agent how CloudCannon configuration, editable regions, and snippets actually work, so it stops guessing.
