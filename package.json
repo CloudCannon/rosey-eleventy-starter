@@ -12,13 +12,16 @@
     "tailwind:build": "tailwindcss -i src/assets/styles/tailwind.css -o _site/assets/styles/tailwind.css",
     "start": "npm-run-all sass:build tailwind:build --parallel sass:watch tailwind:watch eleventy:watch",
     "clean": "rm -rf _site _untranslated_site",
-    "build": "npm-run-all clean sass:build tailwind:build eleventy:build"
+    "build": "npm-run-all clean sass:build tailwind:build eleventy:build",
+    "lint": "biome check",
+    "biome": "biome check --write"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
+    "@biomejs/biome": "2.4.4",
     "@tailwindcss/cli": "^4.3.3",
     "sass": "^1.101.7",
     "tailwindcss": "^4.3.3"

@@ -4,9 +4,24 @@
 const DEFAULT_LOCALE = "en";
 
 const LOCALES = {
-	en: { label: "EN", dateLocale: "en-US", postsDir: "blog", collection: "posts" },
-	fr: { label: "FR", dateLocale: "fr-FR", postsDir: "blog_fr", collection: "posts_fr" },
-	de: { label: "DE", dateLocale: "de-DE", postsDir: "blog_de", collection: "posts_de" },
+	en: {
+		label: "EN",
+		dateLocale: "en-US",
+		postsDir: "blog",
+		collection: "posts",
+	},
+	fr: {
+		label: "FR",
+		dateLocale: "fr-FR",
+		postsDir: "blog_fr",
+		collection: "posts_fr",
+	},
+	de: {
+		label: "DE",
+		dateLocale: "de-DE",
+		postsDir: "blog_de",
+		collection: "posts_de",
+	},
 };
 
 const LOCALE_CODES = Object.keys(LOCALES);

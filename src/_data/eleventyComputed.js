@@ -9,7 +9,7 @@ module.exports = {
 	rosey_root: (data) => {
 		if (data.rosey_root_override) return data.rosey_root_override;
 
-		const stem = (data.page && data.page.filePathStem) || "";
+		const stem = data.page?.filePathStem || "";
 		const key = stem
 			.replace(/^\/pages\//, "")
 			.replace(/^\/+/, "")
