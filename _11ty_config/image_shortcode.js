@@ -1,6 +1,6 @@
 const path = require("node:path");
 const fs = require("node:fs");
-const Image = require("@11ty/eleventy-img");
+const { default: Image } = require("@11ty/eleventy-img");
 
 const IMAGE_OPTIONS = {
 	widths: [640, 960, 1280],
