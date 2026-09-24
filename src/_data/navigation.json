@@ -1,7 +1,7 @@
 {
   "header": {
-    "logo": "/assets/images/logos/logo-wordmark-blue.png",
-    "logo_alt": "",
+    "logo": "/assets/images/logos/eleventy-multilingual-starter-logo.svg",
+    "logo_alt": "Eleventy Multilingual Starter",
     "logo_url": "/",
     "background_color": "#ffffff",
     "color": "#393939",
@@ -17,8 +17,8 @@
     ]
   },
   "footer": {
-    "logo": "/assets/images/logos/logo-wordmark-white.png",
-    "logo_alt": "",
+    "logo": "/assets/images/logos/eleventy-multilingual-starter-logo-reversed.svg",
+    "logo_alt": "Eleventy Multilingual Starter",
     "logo_url": "/",
     "copyright": "MyCompany. All rights reserved.",
     "background_color": "#333232",
