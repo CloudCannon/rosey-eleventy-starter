@@ -46,7 +46,7 @@
     color: #034ad8;
   }
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 720px) {
     .header__nav-links {
       position: static;
       display: flex !important;
@@ -58,7 +58,7 @@
     }
   }
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 720px) {
     .header__nav-item {
       padding-left: 1rem;
     }
@@ -78,7 +78,7 @@
     background-color: #e5ecfb;
   }
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 720px) {
     .hamburger {
       display: none;
     }
