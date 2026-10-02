@@ -477,6 +477,11 @@ _inputs:
     cascade: true
   favicon:
     type: image
+    comment: SVG favicon used by modern browsers
+  favicon_ico:
+    type: image
+    label: Favicon (ICO)
+    comment: 32x32 .ico fallback for browsers without SVG favicon support
 _editables:
   content:
     allow_custom_markup: false
